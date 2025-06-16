@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
 import { createSupabaseClient } from "@/lib/supabase"
 import { Eye, EyeOff, Lock } from "lucide-react"
+import type { Session } from "@supabase/supabase-js"
 
 export default function UpdatePasswordPage() {
   const [password, setPassword] = useState("")
@@ -16,7 +17,7 @@ export default function UpdatePasswordPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState<Session | null>(null)
   
   const router = useRouter()
   const { toast } = useToast()
