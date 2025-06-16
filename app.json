@@ -1,0 +1,69 @@
+{
+  "name": "PDF Pro - Advanced PDF Manipulation",
+  "description": "Professional PDF editing, annotation, and collaboration platform",
+  "repository": "https://github.com/your-username/pdf-manipulation-app",
+  "logo": "https://your-domain.com/logo.png",
+  "keywords": ["pdf", "editor", "collaboration", "nextjs", "supabase", "stripe"],
+  "success_url": "/",
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": {
+      "description": "Your Supabase project URL",
+      "required": true
+    },
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
+      "description": "Your Supabase anonymous key",
+      "required": true
+    },
+    "SUPABASE_SERVICE_ROLE_KEY": {
+      "description": "Your Supabase service role key",
+      "required": true
+    },
+    "SUPABASE_PROJECT_ID": {
+      "description": "Your Supabase project ID",
+      "required": true
+    },
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": {
+      "description": "Your Stripe publishable key",
+      "required": true
+    },
+    "STRIPE_SECRET_KEY": {
+      "description": "Your Stripe secret key",
+      "required": true
+    },
+    "STRIPE_WEBHOOK_SECRET": {
+      "description": "Your Stripe webhook secret",
+      "required": true
+    },
+    "NEXTAUTH_URL": {
+      "description": "The URL of your application",
+      "required": true
+    },
+    "NEXTAUTH_SECRET": {
+      "description": "Secret for NextAuth.js",
+      "generator": "secret"
+    },
+    "NODE_ENV": {
+      "description": "Node environment",
+      "value": "production"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "addons": [
+    {
+      "plan": "heroku-redis:mini"
+    }
+  ],
+  "scripts": {
+    "postdeploy": "echo 'Deployment completed successfully!'"
+  }
+}
