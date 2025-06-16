@@ -10,7 +10,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { useQuery, useMutation } from "@tanstack/react-query"
 import { createSupabaseClient } from "@/lib/supabase"
 import { SUBSCRIPTION_PLANS, formatPrice } from "@/lib/stripe"
-import { formatBytes, formatDate } from "@/lib/utils"
+import { formatBytes, formatDate, cn } from "@/lib/utils"
 import { 
   CreditCard, 
   Check, 
