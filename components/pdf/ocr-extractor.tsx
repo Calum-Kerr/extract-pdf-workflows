@@ -54,7 +54,11 @@ export function OCRExtractor({
 
   const ocrMutation = useMutation({
     mutationFn: async () => {
-      const worker = await createWorker(language)
+      const worker = await createWorker({
+        logger: m => console.log(m)
+      })
+      await worker.loadLanguage(language)
+      await worker.initialize(language)
       
       try {
         // Convert PDF page to image if needed
