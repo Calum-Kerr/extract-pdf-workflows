@@ -7,7 +7,7 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 // Subscription plans configuration
 export const SUBSCRIPTION_PLANS = {
-  FREE: {
+  free: {
     id: 'free',
     name: 'Free',
     description: 'Basic PDF operations',
@@ -28,7 +28,7 @@ export const SUBSCRIPTION_PLANS = {
       apiCalls: 100
     }
   },
-  PRO: {
+  pro: {
     id: 'pro',
     name: 'Pro',
     description: 'Advanced PDF manipulation',
@@ -52,7 +52,7 @@ export const SUBSCRIPTION_PLANS = {
       apiCalls: 10000
     }
   },
-  ENTERPRISE: {
+  enterprise: {
     id: 'enterprise',
     name: 'Enterprise',
     description: 'Unlimited PDF processing',
@@ -212,7 +212,7 @@ export const getPlanLimits = (planId: SubscriptionPlan) => {
 
 export const canPerformAction = (
   planId: SubscriptionPlan,
-  action: keyof typeof SUBSCRIPTION_PLANS.FREE.limits,
+  action: keyof typeof SUBSCRIPTION_PLANS.free.limits,
   currentUsage: number
 ) => {
   const limits = getPlanLimits(planId)

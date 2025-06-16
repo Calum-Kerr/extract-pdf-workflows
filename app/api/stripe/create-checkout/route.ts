@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
       billing_address_collection: 'required',
       line_items: [
         {
-          price: plan.stripePriceId,
+          price: plan.priceId!,
           quantity: 1,
         },
       ],
