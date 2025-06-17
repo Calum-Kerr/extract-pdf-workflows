@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { PageLayout } from '@/components/layout/page-layout'
+import { SiteHeader } from '@/components/layout/site-header'
+import { SiteFooter } from '@/components/layout/site-footer'
 import { Check, Star } from 'lucide-react'
 import Link from 'next/link'
 
@@ -68,8 +69,10 @@ export default function PricingPage() {
   ]
 
   return (
-    <PageLayout>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="flex flex-col min-h-screen">
+      <SiteHeader />
+      <main className="flex-1">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
@@ -185,7 +188,9 @@ export default function PricingPage() {
             </Card>
           </div>
         </div>
-      </div>
-    </PageLayout>
+        </div>
+      </main>
+      <SiteFooter />
+    </div>
   )
 }
