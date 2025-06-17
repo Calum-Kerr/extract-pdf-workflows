@@ -1,14 +1,14 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
-  const supabase = createMiddlewareClient({ req, res })
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  // For now, let's simplify middleware to avoid multiple Supabase instances
+  // We'll check for auth tokens in cookies instead
+  const authToken = req.cookies.get('sb-access-token')?.value
+  const refreshToken = req.cookies.get('sb-refresh-token')?.value
+  const hasSession = authToken && refreshToken
 
   // Protected routes that require authentication
   const protectedRoutes = ['/dashboard']
@@ -22,14 +22,14 @@ export async function middleware(req: NextRequest) {
   )
 
   // Redirect to signin if accessing protected route without session
-  if (isProtectedRoute && !session) {
-    const redirectUrl = new URL('/auth/signin', req.url)
+  if (isProtectedRoute && !hasSession) {
+    const redirectUrl = new URL('/signin', req.url)
     redirectUrl.searchParams.set('redirectTo', req.nextUrl.pathname)
     return NextResponse.redirect(redirectUrl)
   }
 
   // Redirect to dashboard if accessing auth routes with session
-  if (isAuthRoute && session) {
+  if (isAuthRoute && hasSession) {
     return NextResponse.redirect(new URL('/dashboard', req.url))
   }
 

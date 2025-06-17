@@ -1,17 +1,40 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/supabase'
 
-// Get environment variables
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+// Get environment variables with proper error handling
+const getSupabaseUrl = () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!url) {
+    throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL environment variable')
+  }
+  return url
+}
+
+const getSupabaseAnonKey = () => {
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!key) {
+    throw new Error('Missing NEXT_PUBLIC_SUPABASE_ANON_KEY environment variable')
+  }
+  return key
+}
+
+const getSupabaseServiceKey = () => {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!key) {
+    throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable')
+  }
+  return key
+}
 
 // Client-side Supabase client (singleton)
 let supabaseInstance: ReturnType<typeof createClient<Database>> | null = null
 
 export const createSupabaseClient = () => {
   if (!supabaseInstance) {
-    supabaseInstance = createClient<Database>(supabaseUrl, supabaseAnonKey)
+    supabaseInstance = createClient<Database>(
+      getSupabaseUrl(),
+      getSupabaseAnonKey()
+    )
   }
   return supabaseInstance
 }
@@ -21,13 +44,16 @@ export const supabase = createSupabaseClient()
 
 // Server component client
 export const createSupabaseServerClient = () => {
-  return createClient<Database>(supabaseUrl, supabaseAnonKey)
+  return createClient<Database>(
+    getSupabaseUrl(),
+    getSupabaseAnonKey()
+  )
 }
 
 // Admin client for server-side operations
 export const supabaseAdmin = createClient<Database>(
-  supabaseUrl,
-  supabaseServiceKey,
+  getSupabaseUrl(),
+  getSupabaseServiceKey(),
   {
     auth: {
       autoRefreshToken: false,
