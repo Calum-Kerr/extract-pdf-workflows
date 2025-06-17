@@ -181,7 +181,7 @@ export function createAbortController() {
 export function parseSearchParams(searchParams: URLSearchParams) {
   const params: Record<string, string | string[]> = {}
   
-  for (const [key, value] of searchParams.entries()) {
+  for (const [key, value] of Array.from(searchParams.entries())) {
     if (params[key]) {
       if (Array.isArray(params[key])) {
         (params[key] as string[]).push(value)
