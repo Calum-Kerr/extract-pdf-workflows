@@ -56,21 +56,18 @@ export function PricingSection({
 
   const plans = [
     {
-      id: "free",
       ...SUBSCRIPTION_PLANS.free,
       popular: false,
       cta: "Get Started",
       ctaVariant: "outline" as const,
     },
     {
-      id: "pro",
       ...SUBSCRIPTION_PLANS.pro,
       popular: true,
       cta: "Start Free Trial",
       ctaVariant: "default" as const,
     },
     {
-      id: "enterprise",
       ...SUBSCRIPTION_PLANS.enterprise,
       popular: false,
       cta: "Contact Sales",
