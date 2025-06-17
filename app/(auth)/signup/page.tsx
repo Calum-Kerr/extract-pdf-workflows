@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { createSupabaseClient } from "@/lib/supabase"
 import { Eye, EyeOff, Github, Mail } from "lucide-react"
 
-export default function SignUpPage() {
+function SignUpForm() {
   const [fullName, setFullName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -247,5 +247,13 @@ export default function SignUpPage() {
         </div>
       </CardContent>
     </Card>
+  )
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignUpForm />
+    </Suspense>
   )
 }
