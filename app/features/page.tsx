@@ -1,16 +1,16 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { 
-  FileText, 
-  Edit3, 
-  Users, 
-  Shield, 
-  Zap, 
-  Search, 
-  Download, 
+import {
+  FileText,
+  Edit3,
+  Users,
+  Shield,
+  Zap,
+  Search,
+  Download,
   Share2,
-  Signature,
+  PenTool,
   Eye,
   RotateCw,
   Scissors
@@ -32,7 +32,7 @@ export default function FeaturesPage() {
       category: "Editing"
     },
     {
-      icon: Signature,
+      icon: PenTool,
       title: "Digital Signatures",
       description: "Create and apply legally binding digital signatures.",
       category: "Security"

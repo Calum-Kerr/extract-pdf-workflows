@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Play, FileText, Users, Signature, Search } from 'lucide-react'
+import { Play, FileText, Users, PenTool, Search } from 'lucide-react'
 import Link from 'next/link'
 
 export default function DemoPage() {
@@ -21,7 +21,7 @@ export default function DemoPage() {
       thumbnail: "/api/placeholder/400/225"
     },
     {
-      icon: Signature,
+      icon: PenTool,
       title: "Digital Signatures",
       description: "Learn how to create and apply legally binding digital signatures.",
       duration: "2 min",
