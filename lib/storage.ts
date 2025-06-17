@@ -33,7 +33,7 @@ export class StorageManager {
     // Generate unique path if not provided
     const filePath = path || this.generateFilePath(file)
     
-    const { data, error } = await this.getSupabase().storage
+    const { data, error } = await this.supabase.storage
       .from(bucket)
       .upload(filePath, file, {
         upsert,
@@ -46,7 +46,7 @@ export class StorageManager {
     }
 
     // Get public URL
-    const { data: urlData } = this.getSupabase().storage
+    const { data: urlData } = this.supabase.storage
       .from(bucket)
       .getPublicUrl(filePath)
 
@@ -73,7 +73,7 @@ export class StorageManager {
       downloadPath = `${path}?${params.toString()}`
     }
 
-    const { data, error } = await this.getSupabase().storage
+    const { data, error } = await this.supabase.storage
       .from(bucket)
       .download(downloadPath)
 
@@ -90,7 +90,7 @@ export class StorageManager {
     path: string,
     expiresIn = 3600 // 1 hour default
   ): Promise<string> {
-    const { data, error } = await this.getSupabase().storage
+    const { data, error } = await this.supabase.storage
       .from(bucket)
       .createSignedUrl(path, expiresIn)
 
@@ -103,7 +103,7 @@ export class StorageManager {
 
   // Delete file from storage
   async deleteFile(bucket: string, path: string): Promise<void> {
-    const { error } = await this.getSupabase().storage
+    const { error } = await this.supabase.storage
       .from(bucket)
       .remove([path])
 
@@ -118,7 +118,7 @@ export class StorageManager {
     fromPath: string,
     toPath: string
   ): Promise<void> {
-    const { error } = await this.getSupabase().storage
+    const { error } = await this.supabase.storage
       .from(bucket)
       .move(fromPath, toPath)
 
@@ -133,7 +133,7 @@ export class StorageManager {
     fromPath: string,
     toPath: string
   ): Promise<void> {
-    const { error } = await this.getSupabase().storage
+    const { error } = await this.supabase.storage
       .from(bucket)
       .copy(fromPath, toPath)
 
@@ -152,7 +152,7 @@ export class StorageManager {
       sortBy?: { column: string; order: 'asc' | 'desc' }
     } = {}
   ) {
-    const { data, error } = await this.getSupabase().storage
+    const { data, error } = await this.supabase.storage
       .from(bucket)
       .list(path, options)
 
@@ -175,7 +175,7 @@ export class StorageManager {
 
   // Get file info
   async getFileInfo(bucket: string, path: string) {
-    const { data, error } = await this.getSupabase().storage
+    const { data, error } = await this.supabase.storage
       .from(bucket)
       .list('', {
         search: path
@@ -286,7 +286,7 @@ export class DocumentStorage extends StorageManager {
     // Delete all document files
     const filePaths = files.map(file => `${basePath}/${file.name}`)
     if (filePaths.length > 0) {
-      const { error } = await this.getSupabase().storage
+      const { error } = await this.supabase.storage
         .from(STORAGE_BUCKETS.DOCUMENTS)
         .remove(filePaths)
       
