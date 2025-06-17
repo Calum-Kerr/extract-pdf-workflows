@@ -21,7 +21,7 @@ export interface FileDownloadOptions {
 }
 
 export class StorageManager {
-  private supabase = createSupabaseClient()
+  protected supabase = createSupabaseClient()
 
   // Upload file to Supabase Storage
   async uploadFile(
