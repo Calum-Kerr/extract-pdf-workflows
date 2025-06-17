@@ -1,4 +1,4 @@
-import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib'
+import { PDFDocument, PDFPage, rgb, StandardFonts, degrees } from 'pdf-lib'
 import * as pdfjsLib from 'pdfjs-dist'
 
 // Configure PDF.js worker
@@ -248,7 +248,7 @@ export class PDFEngine {
         font,
         color: rgb(color[0], color[1], color[2]),
         opacity,
-        rotate: { type: 'degrees', angle: rotation }
+        rotate: degrees(rotation)
       })
     })
 
@@ -309,12 +309,12 @@ export class PDFEngine {
   }
 
   // Rotate pages
-  async rotatePages(pageNumbers: number[], degrees: number): Promise<Uint8Array> {
+  async rotatePages(pageNumbers: number[], rotationDegrees: number): Promise<Uint8Array> {
     if (!this.pdfDoc) throw new Error('No PDF loaded')
 
     pageNumbers.forEach(pageNum => {
       const page = this.pdfDoc!.getPage(pageNum - 1)
-      page.setRotation({ type: 'degrees', angle: degrees })
+      page.setRotation(degrees(rotationDegrees))
     })
 
     return await this.pdfDoc.save()
