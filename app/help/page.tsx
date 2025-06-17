@@ -14,6 +14,7 @@ export default function HelpPage() {
           </p>
         </div>
       </div>
+      </div>
     </PageLayout>
   )
 }

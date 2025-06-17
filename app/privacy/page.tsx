@@ -14,6 +14,7 @@ export default function PrivacyPage() {
           </p>
         </div>
       </div>
+      </div>
     </PageLayout>
   )
 }
