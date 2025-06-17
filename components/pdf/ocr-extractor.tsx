@@ -54,9 +54,7 @@ export function OCRExtractor({
 
   const ocrMutation = useMutation({
     mutationFn: async () => {
-      const worker = await createWorker({
-        logger: m => console.log(m)
-      })
+      const worker = await createWorker()
       await worker.loadLanguage(language)
       await worker.initialize(language)
       
@@ -70,13 +68,7 @@ export function OCRExtractor({
           throw new Error("PDF to image conversion not implemented in this demo")
         }
 
-        const result = await worker.recognize(imageSource, {
-          logger: (m) => {
-            if (m.status === "recognizing text") {
-              setProgress(Math.round(m.progress * 100))
-            }
-          }
-        })
+        const result = await worker.recognize(imageSource)
 
         await worker.terminate()
         return result.data.text
