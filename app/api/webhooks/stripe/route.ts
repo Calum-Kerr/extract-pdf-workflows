@@ -2,7 +2,7 @@ import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { stripe, constructWebhookEvent } from '@/lib/stripe'
-import { supabaseAdmin } from '@/lib/supabase'
+import { getSupabaseAdmin } from '@/lib/supabase'
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
@@ -79,7 +79,7 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
   }
 
   // Find the user by email
-  const { data: profile, error: profileError } = await supabaseAdmin
+  const { data: profile, error: profileError } = await getSupabaseAdmin()
     .from('profiles')
     .select('id')
     .eq('email', email)
@@ -100,7 +100,7 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
   }
 
   // Update or create subscription record
-  const { error: subscriptionError } = await supabaseAdmin
+  const { error: subscriptionError } = await getSupabaseAdmin()
     .from('subscriptions')
     .upsert({
       user_id: profile.id,
@@ -120,7 +120,7 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
   }
 
   // Update user profile with new subscription tier
-  const { error: updateError } = await supabaseAdmin
+  const { error: updateError } = await getSupabaseAdmin()
     .from('profiles')
     .update({
       subscription_tier: subscriptionTier,
@@ -136,7 +136,7 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
 }
 
 async function handleSubscriptionCancellation(subscription: Stripe.Subscription) {
-  const { error } = await supabaseAdmin
+  const { error } = await getSupabaseAdmin()
     .from('subscriptions')
     .update({
       status: 'canceled',
@@ -149,14 +149,14 @@ async function handleSubscriptionCancellation(subscription: Stripe.Subscription)
   }
 
   // Update user profile to free tier
-  const { data: subscriptionData } = await supabaseAdmin
+  const { data: subscriptionData } = await getSupabaseAdmin()
     .from('subscriptions')
     .select('user_id')
     .eq('stripe_subscription_id', subscription.id)
     .single()
 
   if (subscriptionData) {
-    await supabaseAdmin
+    await getSupabaseAdmin()
       .from('profiles')
       .update({
         subscription_tier: 'free',
@@ -170,9 +170,9 @@ async function handleSubscriptionCancellation(subscription: Stripe.Subscription)
 
 async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
   const subscriptionId = invoice.subscription as string
-  
+
   if (subscriptionId) {
-    const { error } = await supabaseAdmin
+    const { error } = await getSupabaseAdmin()
       .from('subscriptions')
       .update({
         status: 'active',
@@ -190,9 +190,9 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
 
 async function handlePaymentFailed(invoice: Stripe.Invoice) {
   const subscriptionId = invoice.subscription as string
-  
+
   if (subscriptionId) {
-    const { error } = await supabaseAdmin
+    const { error } = await getSupabaseAdmin()
       .from('subscriptions')
       .update({
         status: 'past_due',

@@ -19,6 +19,10 @@ const getSupabaseAnonKey = () => {
 }
 
 const getSupabaseServiceKey = () => {
+  if (typeof window !== 'undefined') {
+    throw new Error('Service role key should only be accessed on the server side')
+  }
+
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!key) {
     throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable')
@@ -50,17 +54,29 @@ export const createSupabaseServerClient = () => {
   )
 }
 
-// Admin client for server-side operations
-export const supabaseAdmin = createClient<Database>(
-  getSupabaseUrl(),
-  getSupabaseServiceKey(),
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
+// Admin client for server-side operations (lazy-loaded)
+let supabaseAdminInstance: ReturnType<typeof createClient<Database>> | null = null
+
+export const getSupabaseAdmin = () => {
+  if (typeof window !== 'undefined') {
+    throw new Error('Admin client should only be used on the server side')
   }
-)
+
+  if (!supabaseAdminInstance) {
+    supabaseAdminInstance = createClient<Database>(
+      getSupabaseUrl(),
+      getSupabaseServiceKey(),
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    )
+  }
+
+  return supabaseAdminInstance
+}
 
 // Storage bucket names
 export const STORAGE_BUCKETS = {
