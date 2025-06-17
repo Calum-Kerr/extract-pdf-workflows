@@ -3,7 +3,31 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { ArrowRight, FileText, Users, Shield, Zap, Star, Check } from 'lucide-react'
 import Link from 'next/link'
-import { SUBSCRIPTION_PLANS } from '@/lib/stripe'
+
+// Simple plans for now to avoid server/client issues
+const SIMPLE_PLANS = {
+  free: {
+    id: 'free',
+    name: 'Free',
+    description: 'Basic PDF operations',
+    price: 0,
+    features: ['10MB file uploads', '100MB storage', 'Basic PDF viewing', 'Simple annotations']
+  },
+  pro: {
+    id: 'pro',
+    name: 'Pro',
+    description: 'Advanced PDF manipulation',
+    price: 9.99,
+    features: ['100MB file uploads', '10GB storage', 'Advanced editing', 'Real-time collaboration', 'Digital signatures']
+  },
+  enterprise: {
+    id: 'enterprise',
+    name: 'Enterprise',
+    description: 'Unlimited PDF processing',
+    price: 49.99,
+    features: ['Unlimited uploads', 'Unlimited storage', 'Custom branding', 'SSO integration', 'Priority support']
+  }
+}
 
 export default function HomePage() {
   return (
@@ -172,7 +196,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
-          {Object.values(SUBSCRIPTION_PLANS).map((plan) => (
+          {Object.values(SIMPLE_PLANS).map((plan) => (
             <Card key={plan.id} className={plan.id === 'pro' ? 'border-primary' : ''}>
               <CardHeader>
                 <div className="flex items-center justify-between">
